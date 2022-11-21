@@ -1,13 +1,16 @@
-var express = require('express');
-var app = express();
+var express = require('express')
+var app = express()
 
-app.post('/test/post', function (req, res) {
-    res.set('Content-Type', 'application/json')
-    res.send('{}');
-  })
+app.get('/from', (req, res) => {
+  res.redirect(302, '/to')
+})
+app.get('/to', (req, res) => res.send('Redirected'))
 
-  var server = app.listen(3000, function () {
-  var port = server.address().port;
-  console.log('Example app listening at port %s', port);
-});
-module.exports = server;
+app.get('/index.html', (req, res) => {
+  res.send('<button onclick="fetch(\'http://localhost:3000/from\')" ></button>')
+})
+var server = app.listen(3000, function () {
+  var port = server.address().port
+  console.log('Example app listening at port %s', port)
+})
+module.exports = server
